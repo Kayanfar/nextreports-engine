@@ -196,6 +196,8 @@ public class PdfExporter extends ResultExporter {
 
     public static final String PDF_ENCODING_PROPERTY = "nextreports.pdf.encoding";
     public static final String PDF_FONT_PROPERTY = "nextreports.pdf.font";
+    public static final String PDF_DIRECTION = "nextreports.pdf.direction";
+    public static final String PDF_ARABIC_OPTIONS = "nextreports.pdf.arabic_options";
 
     // ANSI Encoding of the pdf document
     // http://www.microsoft.com/globaldev/reference/WinCP.mspx
@@ -207,6 +209,8 @@ public class PdfExporter extends ResultExporter {
     // creating a not-readable string.
     // This is used only if an encoding is present.
     private final String embeddedFont = System.getProperty(PDF_FONT_PROPERTY);
+    private final int textDirection = Integer.getInteger(PDF_DIRECTION, 0);
+    private final int arabicOptions = Integer.getInteger(PDF_ARABIC_OPTIONS, 0);
 
     // Pdf font name if no encoding or if no embedded font is used
     private String fontName = FontFactory.TIMES;
@@ -327,6 +331,8 @@ public class PdfExporter extends ResultExporter {
             }
         }
 
+        cell.setArabicOptions(arabicOptions);//AR_NOVOWEL, AR_COMPOSEDTASHKEEL and AR_LIG
+        cell.setRunDirection(textDirection);//PdfWriter.RUN_DIRECTION_DEFAULT, PdfWriter.RUN_DIRECTION_NO_BIDI, PdfWriter.RUN_DIRECTION_LTR or PdfWriter.RUN_DIRECTION_RTL
         cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
         cell.setUseDescender(true); // needed for a cell without padding
         cell.setMinimumHeight(MINIMUM_HEIGHT);  // needed if there is a row in which all cells are empty
